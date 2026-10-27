@@ -14,6 +14,12 @@ services:
   ssrf_proxy:
     extra_hosts: ["host.docker.internal:host-gateway"]
     networks: [kit-rede]
+  # Recursos de "agente" do Dify que a disciplina não usa: ficam desligados
+  # (economizam vários GB de disco). Para ligar: COMPOSE_PROFILES=agente
+  local_sandbox:
+    profiles: [agente]
+  agent_ssrf_proxy:
+    profiles: [agente]
   nginx:
     networks:
       kit-rede:
