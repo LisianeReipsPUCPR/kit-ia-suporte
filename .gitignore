@@ -1,0 +1,5 @@
+config/*
+!config/.gitkeep
+publicar.sh
+LINK-DOS-ALUNOS.txt
+PROFESSORA.md
