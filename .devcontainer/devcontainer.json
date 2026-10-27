@@ -1,0 +1,22 @@
+{
+  "name": "Kit IA para Centros de Suporte",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "hostRequirements": { "cpus": 4, "memory": "16gb", "storage": "32gb" },
+  "forwardPorts": [8080, 8081, 3000],
+  "portsAttributes": {
+    "8080": { "label": "1. Painel do kit (comece aqui)", "onAutoForward": "notify" },
+    "8081": { "label": "2. Dify", "onAutoForward": "silent" },
+    "3000": { "label": "3. Chatwoot", "onAutoForward": "silent" }
+  },
+  "otherPortsAttributes": { "onAutoForward": "ignore" },
+  "onCreateCommand": "bash .devcontainer/baixar.sh",
+  "postStartCommand": "bash .devcontainer/ligar.sh",
+  "customizations": {
+    "codespaces": { "openFiles": ["COMECE-AQUI.md"] },
+    "vscode": { "settings": { "workbench.startupEditor": "none", "git.autofetch": false } }
+  }
+}
