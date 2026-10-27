@@ -1,0 +1,60 @@
+# Kit IA para Centros de Suporte: Chatwoot (janela de chat e painel dos atendentes)
+# Versão fixada para todos terem o mesmo ambiente.
+name: kit-chatwoot
+
+x-base: &base
+  image: chatwoot/chatwoot:v4.18.0
+  env_file: .env
+  volumes:
+    - storage_data:/app/storage
+    - ../config:/kit/config
+    - ./seed_kit.rb:/kit/seed_kit.rb:ro
+  extra_hosts: ["host.docker.internal:host-gateway"]
+
+services:
+  rails:
+    <<: *base
+    depends_on: [postgres, redis]
+    ports:
+      - "127.0.0.1:3000:3000"
+    entrypoint: docker/entrypoints/rails.sh
+    networks:
+      default: {}
+      kit-rede:
+        aliases: [chatwoot]
+    command: ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+    restart: unless-stopped
+
+  sidekiq:
+    <<: *base
+    depends_on: [postgres, redis]
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    networks: [default, kit-rede]
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=chatwoot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=883d6d8131dbd531ddc2058d
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\""]
+    env_file: .env
+    volumes:
+      - redis_data:/data
+
+volumes:
+  storage_data:
+  postgres_data:
+  redis_data:
+
+networks:
+  kit-rede:
+    external: true

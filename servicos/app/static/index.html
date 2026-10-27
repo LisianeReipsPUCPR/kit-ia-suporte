@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit IA para Centros de Suporte</title>
+<style>
+  :root { --bg:#faf8f4; --card:#ffffff; --fg:#26282c; --muted:#6b6f76; --gold:#9e8954; --line:#e3ddd0; --ok:#1e7b46; --bad:#b3261e; --warn:#a15c00; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Segoe UI", Ubuntu, Arial, sans-serif; background:var(--bg); color:var(--fg); font-size:15px; line-height:1.5; }
+  header { background:#404348; color:#fff; padding:18px 24px; }
+  header h1 { margin:0; font-size:22px; }
+  header p { margin:4px 0 0; color:#d9d4c7; font-size:14px; }
+  main { max-width:1000px; margin:0 auto; padding:20px 16px 80px; display:grid; gap:18px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; }
+  h2 { margin:0 0 6px; font-size:18px; }
+  h2 small { color:var(--gold); font-weight:600; margin-right:6px; }
+  p.ajuda { margin:0 0 12px; color:var(--muted); }
+  .status { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:8px; }
+  .item { border:1px solid var(--line); border-radius:8px; padding:8px 10px; display:flex; justify-content:space-between; gap:8px; }
+  .pill { font-weight:700; font-size:13px; }
+  .pill.ok { color:var(--ok); } .pill.bad { color:var(--bad); } .pill.warn { color:var(--warn); }
+  .links { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+  a.botao, button { display:inline-block; background:var(--gold); color:#fff; border:0; border-radius:8px; padding:9px 14px; font-size:14px; font-weight:600; text-decoration:none; cursor:pointer; }
+  button.sec { background:#5d6168; }
+  button:focus-visible, a.botao:focus-visible, input:focus-visible, select:focus-visible { outline:3px solid #2b6cb0; outline-offset:2px; }
+  code, .cred { background:#f2efe8; border-radius:4px; padding:1px 6px; font-family: Consolas, "Ubuntu Mono", monospace; }
+  form { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  input, select, textarea { font:inherit; padding:8px 10px; border:1px solid #c9c2b2; border-radius:6px; background:#fff; }
+  input[type=text] { flex:1 1 320px; }
+  textarea { width:100%; min-height:60px; }
+  pre { background:#26282c; color:#f2efe8; padding:10px 12px; border-radius:8px; overflow-x:auto; font-size:13px; margin:10px 0 0; white-space:pre-wrap; }
+  .msg { margin-top:8px; font-weight:600; }
+  ol { margin:6px 0 0; padding-left:20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Kit IA para Centros de Suporte</h1>
+  <p>Laboratório do Chatbot STJ · cada aluno tem o seu ambiente · dados fictícios</p>
+</header>
+<main>
+
+<section>
+  <h2><small>1</small>Está tudo ligado?</h2>
+  <p class="ajuda">Atualiza sozinho a cada 5 segundos. Na primeira vez, o Dify e o Chatwoot podem levar alguns minutos para ficar verdes.</p>
+  <div class="status" id="status">Verificando...</div>
+</section>
+
+<section>
+  <h2><small>2</small>Abrir as ferramentas</h2>
+  <div class="links">
+    <div>
+      <p><strong>Dify</strong> · o "cérebro" do bot (fluxo, base de conhecimento, modelo de IA)</p>
+      <a class="botao" href="{{PUB_DIFY}}" target="_blank" rel="noopener">Abrir o Dify</a>
+      <p class="ajuda">Login: <span class="cred">{{LOGIN}}</span> · senha: <span class="cred">{{SENHA}}</span></p>
+    </div>
+    <div>
+      <p><strong>Chatwoot</strong> · janela de chat e painel dos atendentes</p>
+      <a class="botao" href="{{PUB_CHATWOOT}}" target="_blank" rel="noopener">Abrir o Chatwoot</a>
+      <p class="ajuda">Login: <span class="cred">{{LOGIN}}</span> · senha: <span class="cred">{{SENHA}}</span></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><small>3</small>Ligar o bot ao Dify</h2>
+  <p class="ajuda">Normalmente já vem ligado: se "Dify configurado" estiver verde no item 1, pule esta etapa. Se estiver vermelho, no Dify, abra o app <strong>Bot STJ</strong> › <strong>Publicar</strong> › <strong>Acesso à API</strong> › <strong>Chave secreta da API</strong> › copie a chave (começa com <code>app-</code>) e cole aqui.</p>
+  <form id="fchave">
+    <label for="chave" class="ajuda" style="margin:0">Chave da API do Dify</label>
+    <input type="text" id="chave" name="chave" placeholder="app-..." autocomplete="off" required>
+    <button type="submit">Salvar chave</button>
+  </form>
+  <div class="msg" id="mchave"></div>
+</section>
+
+<section>
+  <h2><small>4</small>Testar o chat on-line</h2>
+  <p class="ajuda">Clique no balão no canto inferior direito desta página e converse como se fosse o cidadão. Teste, por exemplo:</p>
+  <ol>
+    <li>"oi" (boas-vindas e aviso de assistente virtual)</li>
+    <li>"como emito uma certidão?" (resposta da base de conhecimento)</li>
+    <li>"me passa uma receita de pudim" (recusa: fora do escopo)</li>
+    <li>"ATENDENTE" (a conversa aparece como Aberta no Chatwoot)</li>
+  </ol>
+</section>
+
+<section>
+  <h2><small>5</small>Testar a ouvidoria simulada <span class="ajuda">(Aula 5)</span></h2>
+  <form id="fouv">
+    <label for="tipo" class="ajuda" style="margin:0">Tipo</label>
+    <select id="tipo" name="tipo"><option>elogio</option><option>reclamação</option><option>sugestão</option><option>denúncia</option></select>
+    <textarea id="texto" name="texto" aria-label="Texto da manifestação">Quero elogiar a servidora que me atendeu no balcão virtual.</textarea>
+    <button type="submit">Registrar manifestação</button>
+  </form>
+  <pre id="rouv" hidden></pre>
+</section>
+
+<section>
+  <h2><small>6</small>Testar a API do tribunal simulada <span class="ajuda">(Aula 6)</span></h2>
+  <p class="ajuda">Mostra a autorização por token: a API decide quem pode ver o quê <em>antes</em> de qualquer dado chegar à IA.</p>
+  <form id="ftrib">
+    <label for="numero" class="ajuda" style="margin:0">Processo</label>
+    <select id="numero" name="numero">
+      <option value="0001234-52.2026.3.00.0000">0001234-52.2026.3.00.0000 (público)</option>
+      <option value="0007777-71.2026.3.00.0000">0007777-71.2026.3.00.0000 (segredo de justiça)</option>
+      <option value="0001234-53.2026.3.00.0000">0001234-53.2026.3.00.0000 (dígito errado)</option>
+    </select>
+    <label for="token" class="ajuda" style="margin:0">Quem consulta</label>
+    <select id="token" name="token">
+      <option value="">Sem login (sem token)</option>
+      <option value="TOKEN_CIDADAO">Cidadão logado, sem processo</option>
+      <option value="TOKEN_PARTE">Maria, parte do processo sigiloso</option>
+    </select>
+    <input type="hidden" id="vezes" name="vezes" value="1">
+    <button type="submit">Consultar</button>
+    <button type="button" class="sec" id="rajada">Mandar 12 consultas seguidas</button>
+  </form>
+  <pre id="rtrib" hidden></pre>
+</section>
+
+</main>
+
+<script>
+const nomes = {chatwoot:"Chatwoot", dify:"Dify", conector:"Conector", ouvidoria:"Ouvidoria simulada", tribunal:"API do tribunal", chatwoot_configurado:"Chat on-line criado", dify_configurado:"Chave do Dify salva"};
+async function atualizar() {
+  try {
+    const r = await fetch("/api/status"); const s = await r.json();
+    document.getElementById("status").innerHTML = Object.keys(nomes).map(k => {
+      const ok = s[k]; const cls = ok ? "ok" : (k === "dify_configurado" ? "warn" : "bad");
+      const txt = ok ? "OK" : (k === "dify_configurado" ? "falta" : "aguardando");
+      return `<div class="item"><span>${nomes[k]}</span><span class="pill ${cls}">${txt}</span></div>`;
+    }).join("");
+  } catch (e) { document.getElementById("status").textContent = "Não consegui verificar. O kit está ligado?"; }
+}
+atualizar(); setInterval(atualizar, 5000);
+
+async function enviar(form, url) {
+  const r = await fetch(url, {method:"POST", body:new FormData(form)});
+  return [r.status, await r.json()];
+}
+document.getElementById("fchave").addEventListener("submit", async e => {
+  e.preventDefault(); const [st, j] = await enviar(e.target, "/api/chave");
+  const m = document.getElementById("mchave"); m.textContent = j.msg; m.style.color = st === 200 ? "var(--ok)" : "var(--bad)"; atualizar();
+});
+document.getElementById("fouv").addEventListener("submit", async e => {
+  e.preventDefault(); const [, j] = await enviar(e.target, "/api/teste/ouvidoria");
+  const p = document.getElementById("rouv"); p.hidden = false; p.textContent = JSON.stringify(j, null, 2);
+});
+const ft = document.getElementById("ftrib");
+async function consultar(vezes) {
+  document.getElementById("vezes").value = vezes;
+  const [, j] = await enviar(ft, "/api/teste/tribunal");
+  const p = document.getElementById("rtrib"); p.hidden = false;
+  p.textContent = j.map((x, i) => `${vezes > 1 ? "consulta " + (i + 1) + ": " : ""}HTTP ${x.status}  ${JSON.stringify(x.resposta)}`).join("\n");
+}
+ft.addEventListener("submit", e => { e.preventDefault(); consultar(1); });
+document.getElementById("rajada").addEventListener("click", () => consultar(12));
+</script>
+
+<!-- Chat on-line do Chatwoot (o mesmo script iria no portal do tribunal) -->
+<script>
+(function (d, t) {
+  var TOKEN = "{{WEBSITE_TOKEN}}"; if (!TOKEN) return;
+  var BASE_URL = "{{PUB_CHATWOOT}}";
+  var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  g.src = BASE_URL + "/packs/js/sdk.js"; g.defer = true; g.async = true;
+  s.parentNode.insertBefore(g, s);
+  g.onload = function () { window.chatwootSDK.run({ websiteToken: TOKEN, baseUrl: BASE_URL }); };
+})(document, "script");
+</script>
+</body>
+</html>

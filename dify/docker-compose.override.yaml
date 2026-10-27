@@ -1,0 +1,24 @@
+# Kit IA para Centros de Suporte
+# Liga o Dify à rede do kit (conector, ouvidoria e API do tribunal simuladas)
+# e deixa ele enxergar o Ollama do próprio computador (host.docker.internal).
+services:
+  api:
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    networks: [kit-rede]
+  worker:
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    networks: [kit-rede]
+  plugin_daemon:
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    networks: [kit-rede]
+  ssrf_proxy:
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    networks: [kit-rede]
+  nginx:
+    networks:
+      kit-rede:
+        aliases: [dify]
+
+networks:
+  kit-rede:
+    external: true

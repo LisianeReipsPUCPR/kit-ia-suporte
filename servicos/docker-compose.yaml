@@ -1,0 +1,50 @@
+# Kit IA para Centros de Suporte: serviços do laboratório
+name: kit-servicos
+
+x-base: &base
+  build: .
+  image: kit-ia-suporte/servicos:1.0
+  volumes:
+    - ../config:/config
+    - ../bot:/bot:ro
+  extra_hosts: ["host.docker.internal:host-gateway"]
+  restart: unless-stopped
+  environment:
+    CHATWOOT_URL: http://chatwoot:3000
+    DIFY_URL: http://dify/v1
+    PUB_DIFY: ${PUB_DIFY:-http://localhost:8081}
+    PUB_CHATWOOT: ${PUB_CHATWOOT:-http://localhost:3000}
+
+services:
+  conector:
+    <<: *base
+    networks:
+      kit-rede:
+        aliases: [conector]
+    command: ["uvicorn", "conector:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports: ["127.0.0.1:8000:8000"]
+  ouvidoria:
+    <<: *base
+    networks:
+      kit-rede:
+        aliases: [ouvidoria]
+    command: ["uvicorn", "ouvidoria:app", "--host", "0.0.0.0", "--port", "8100"]
+    ports: ["127.0.0.1:8100:8100"]
+  tribunal:
+    <<: *base
+    networks:
+      kit-rede:
+        aliases: [tribunal]
+    command: ["uvicorn", "tribunal:app", "--host", "0.0.0.0", "--port", "8200"]
+    ports: ["127.0.0.1:8200:8200"]
+  pagina:
+    <<: *base
+    networks:
+      kit-rede:
+        aliases: [pagina]
+    command: ["uvicorn", "pagina:app", "--host", "0.0.0.0", "--port", "8080"]
+    ports: ["127.0.0.1:8080:8080"]
+
+networks:
+  kit-rede:
+    external: true
