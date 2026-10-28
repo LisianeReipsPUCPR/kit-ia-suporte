@@ -7,7 +7,7 @@ Na primeira vez, o laboratório leva de **15 a 25 minutos** para ligar. Nas pró
 
 - Se aparecer no topo a faixa **Modo Restrito**, clique em **Gerenciar** › **Confiar**.
 - Para acompanhar, abra o **Terminal** (painel de baixo) e digite:
-  `tail -15 config/inicio.log`
+  `bash .devcontainer/ligar.sh
   Aparecem as etapas **[1/4] a [4/4]**. Quando aparecer **PRONTO!**, siga para o passo 2.
   Se ainda não apareceu, espere um pouco e digite o comando de novo.
 

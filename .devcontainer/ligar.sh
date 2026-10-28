@@ -19,8 +19,13 @@ export KIT_EMAIL="equipe@suporte-lab.com.br"
 # Arquivos .env (não vão para o git): cria a partir dos modelos, com chaves exclusivas
 bash .devcontainer/preparar.sh
 
-# Primeira vez: senha exclusiva deste ambiente
-[ -f config/.senha ] || echo "Stj@$(tr -dc 'a-z0-9' </dev/urandom | head -c 8)7" > config/.senha
+# Primeira vez: senha exclusiva deste ambiente. Recria também se o arquivo estiver vazio
+# ou inválido, porque o Chatwoot exige ao menos 6 caracteres e classes minúsculas,
+# maiúsculas, números e caracteres especiais.
+mkdir -p config
+if [ ! -s config/.senha ] || ! bash .devcontainer/gerar_senha.sh "$(cat config/.senha 2>/dev/null || true)" >/dev/null 2>&1; then
+  bash .devcontainer/gerar_senha.sh > config/.senha
+fi
 export KIT_SENHA="$(cat config/.senha)"
 sed -i "s#^FRONTEND_URL=.*#FRONTEND_URL=${PUB_CHATWOOT}#" chatwoot/.env
 docker network create kit-rede >/dev/null 2>&1 || true

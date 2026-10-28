@@ -5,8 +5,12 @@
 require 'json'
 
 EMAIL = ENV.fetch('KIT_EMAIL', 'equipe@suporte-lab.com.br')
-SENHA = ENV.fetch('KIT_SENHA', 'Suporte@2026')
+SENHA = ENV.fetch('KIT_SENHA', 'Suporte@2026').to_s
 BOT_URL = 'http://conector:8000/webhook'
+
+unless SENHA.match?(/\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}\z/)
+  raise "KIT_SENHA inválida: use pelo menos 6 caracteres incluindo maiúscula, minúscula, número e caractere especial."
+end
 
 user = User.find_by(email: EMAIL)
 unless user
