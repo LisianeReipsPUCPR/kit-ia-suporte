@@ -1,15 +1,11 @@
-# Para a professora: publicar e testar (antes da aula)
+Aqui está a versão adaptada para fork:
 
-## Publicar (uma vez, 10 minutos)
-1. Entre em https://github.com (crie a conta, se precisar) › **New repository**.
-   Nome: `kit-ia-suporte` · **Public** · Create repository.
-2. Na página do repositório: **uploading an existing file** › arraste **o conteúdo**
-   da pasta `kit-ia-suporte-codespaces` (as pastas e arquivos, não a pasta em si).
-   Inclua as pastas que começam com ponto (`.devcontainer`). Commit changes.
-   - Se o Windows esconder `.devcontainer`: no Explorador, Exibir › Mostrar › Itens ocultos.
-3. O link para os alunos é:
-   `https://codespaces.new/SEU-USUARIO/kit-ia-suporte?quickstart=1`
-   (troque SEU-USUARIO). Esse é o "botão Play": abre o ambiente pronto ou reabre o existente.
+1. Entre em https://github.com (crie a conta, se precisar) e abra https://github.com/LisianeReipsPUCPR/kit-ia-suporte › **Fork** (canto superior direito) › mantenha o nome `kit-ia-suporte` › **Create fork**.
+   * A cópia já vem completa, incluindo a pasta `.devcontainer`. Não é preciso enviar arquivos.
+2. O link para os alunos é: `https://codespaces.new/SEU-USUARIO/kit-ia-suporte?quickstart=1` (troque SEU-USUARIO pelo seu usuário do GitHub). Esse é o "botão Play": abre o ambiente pronto ou reabre o existente.
+3. Quando o repositório original for atualizado, entre no seu fork e clique em **Sync fork** › **Update branch** para receber as mudanças.
+
+O passo 3 é opcional. Ele substitui o reenvio manual de arquivos que a versão anterior exigia.
 
 ## Testar (35 minutos)
 - [ ] Abra o link acima. Escolha **Create new codespace** (a máquina de 4 núcleos é escolhida sozinha).
