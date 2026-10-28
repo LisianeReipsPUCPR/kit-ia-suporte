@@ -45,7 +45,7 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\""]
+    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\" --stop-writes-on-bgsave-error no"]
     env_file: .env
     volumes:
       - redis_data:/data
