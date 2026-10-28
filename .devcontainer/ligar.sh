@@ -54,6 +54,9 @@ fi
 echo "[4/4] Configurando o Dify (primeira vez: até 10 minutos)..."
 (cd servicos && docker compose run --rm -e KIT_EMAIL -e KIT_SENHA pagina python configurar_dify.py)
 
+# Conhecimento do Dify: reindexa o que falhou e fica de olho nos modelos de embedding desativados
+setsid nohup bash .devcontainer/corrigir-conhecimento.sh --vigiar >> config/conhecimento.log 2>&1 < /dev/null &
+
 echo
 echo "=============================================================="
 echo " PRONTO! Abra o painel do kit:"
