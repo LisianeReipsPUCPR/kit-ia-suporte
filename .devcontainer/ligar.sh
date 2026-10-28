@@ -16,12 +16,11 @@ else
 fi
 export KIT_EMAIL="equipe@suporte-lab.com.br"
 
-# Primeira vez: senha e chaves secretas exclusivas deste ambiente
-if [ ! -f config/.senha ]; then
-  echo "Stj@$(tr -dc 'a-z0-9' </dev/urandom | head -c 8)7" > config/.senha
-  sed -i "s#^SECRET_KEY_BASE=.*#SECRET_KEY_BASE=$(tr -dc 'a-f0-9' </dev/urandom | head -c 128)#" chatwoot/.env
-  sed -i "s#^SECRET_KEY=.*#SECRET_KEY=kit-$(tr -dc 'a-f0-9' </dev/urandom | head -c 48)#" dify/.env
-fi
+# Arquivos .env (não vão para o git): cria a partir dos modelos, com chaves exclusivas
+bash .devcontainer/preparar.sh
+
+# Primeira vez: senha exclusiva deste ambiente
+[ -f config/.senha ] || echo "Stj@$(tr -dc 'a-z0-9' </dev/urandom | head -c 8)7" > config/.senha
 export KIT_SENHA="$(cat config/.senha)"
 sed -i "s#^FRONTEND_URL=.*#FRONTEND_URL=${PUB_CHATWOOT}#" chatwoot/.env
 docker network create kit-rede >/dev/null 2>&1 || true

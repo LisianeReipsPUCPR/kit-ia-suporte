@@ -714,7 +714,7 @@ workflow:
         type: code
         title: Tipo da manifestação
         code_language: python3
-        code: "# PALAVRAS QUE IDENTIFICAM CADA TIPO DE MANIFESTAÇÃO\n# Para melhorar, acrescente palavras entre aspas, separadas por vírgula, em letras minúsculas.\n# Quando nenhuma palavra aparece, o tipo fica \"reclamação\".\nDENUNCIA = [\"denúnc\", \"denunc\", \"irregular\"]\nELOGIO   = [\"elogi\", \"parabéns\", \"excelente\", \"agradec\"]\nSUGESTAO = [\"sugest\", \"poderia\", \"sugiro\"]\n\n\ndef main(texto: str) -> dict:\n    t = texto.lower()\n    if any(p in t for p in DENUNCIA):\n        tipo = \"denúncia\"\n    elif any(p in t for p in ELOGIO):\n        tipo = \"elogio\"\n    elif any(p in t for p in SUGESTAO):\n        tipo = \"sugestão\"\n    else:\n        tipo = \"reclamação\"\n    return {\"tipo\": tipo}\n"
+        code: "def main(texto: str) -> dict:\n    \"\"\"Identifica o tipo da manifestação por palavras-chave (as equipes podem melhorar).\"\"\"\n    t = texto.lower()\n    if \"denúnc\" in t or \"denunc\" in t or \"irregular\" in t:\n        tipo = \"denúncia\"\n    elif \"elogi\" in t or \"parabéns\" in t or \"excelente\" in t or \"agradec\" in t:\n        tipo = \"elogio\"\n    elif \"sugest\" in t or \"poderia\" in t or \"sugiro\" in t:\n        tipo = \"sugestão\"\n    else:\n        tipo = \"reclamação\"\n    return {\"tipo\": tipo}\n"
         variables:
         - variable: texto
           value_selector: *id001

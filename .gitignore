@@ -1,5 +1,15 @@
 config/*
 !config/.gitkeep
-publicar.sh
-LINK-DOS-ALUNOS.txt
-PROFESSORA.md
+
+# Gerados em cada ambiente pelo .devcontainer/preparar.sh e ligar.sh (segredos e URL do Codespace)
+chatwoot/.env
+dify/.env
+
+# Dados dos containers (bancos, redis, chaves, uploads) e arquivos gerados pelo nginx do Dify
+dify/volumes/*
+!dify/volumes/myscale/
+!dify/volumes/oceanbase/
+!dify/volumes/opensearch/
+dify/volumes/sandbox/*
+!dify/volumes/sandbox/conf/
+dify/nginx/conf.d/default.conf

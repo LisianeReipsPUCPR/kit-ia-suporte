@@ -1,6 +1,6 @@
 # Kit IA para Centros de Suporte
 
-Laboratório da disciplina *Inteligência Artificial para Centros de Suporte* (caso Chatbot STJ).
+Laboratório da disciplina *Inteligência Artificial para Centros de Suporte* (caso Chatbot).
 Dify + Chatwoot + serviços simulados (ouvidoria e consulta de processos), com dados fictícios.
 
 **Para abrir o seu ambiente:** botão verde **Code** › aba **Codespaces** › **Create codespace on main**
