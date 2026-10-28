@@ -1,4 +1,3 @@
-Aqui está a versão adaptada para fork:
 
 1. Entre em https://github.com (crie a conta, se precisar) e abra https://github.com/LisianeReipsPUCPR/kit-ia-suporte › **Fork** (canto superior direito) › mantenha o nome `kit-ia-suporte` › **Create fork**.
    * A cópia já vem completa, incluindo a pasta `.devcontainer`. Não é preciso enviar arquivos.
