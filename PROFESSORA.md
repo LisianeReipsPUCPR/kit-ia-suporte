@@ -32,7 +32,8 @@ Se o fluxo do Bot STJ mudou, suba `VERSAO` em `servicos/app/configurar_dify.py`:
 Dify roda uma vez em cada ambiente e preserva o que o aluno personalizou.
 Forks anteriores a este mecanismo precisam de uma ação, uma única vez:
 - quem **já tem Codespace**: no Terminal, rodar
-  `git pull --no-edit https://github.com/LisianeReipsPUCPR/kit-ia-suporte main && bash .devcontainer/ligar.sh`
+  `curl -fsSL https://raw.githubusercontent.com/LisianeReipsPUCPR/kit-ia-suporte/main/.devcontainer/atualizar.sh | bash && bash .devcontainer/ligar.sh`
+  (não usar `git pull`: ele falha ou apaga os `.env` do aluno, com as chaves dele)
 - quem **ainda não abriu**: na página do fork, clicar em **Sync fork** › **Update branch** e abrir o Codespace.
 
 ## Na aula

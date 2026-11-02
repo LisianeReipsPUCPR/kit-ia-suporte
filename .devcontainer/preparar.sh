@@ -7,9 +7,19 @@ aleatorio() { tr -dc 'a-f0-9' </dev/urandom | head -c "$1"; }
 if [ ! -f dify/.env ]; then
   sed -e "s#^EXPOSE_NGINX_PORT=.*#EXPOSE_NGINX_PORT=8081#" \
       -e "s#^EXPOSE_NGINX_SSL_PORT=.*#EXPOSE_NGINX_SSL_PORT=127.0.0.1:8444#" \
-      -e "s#^VECTOR_STORE=.*#VECTOR_STORE=pgvector#" \
+      -e "s#^VECTOR_STORE=.*#VECTOR_STORE=weaviate#" \
       -e "s#^SECRET_KEY=.*#SECRET_KEY=kit-$(aleatorio 48)#" \
       dify/.env.example > dify/.env
+fi
+
+# Sem isto, os nós do Dify não alcançam a API do tribunal e a ouvidoria, que ficam na rede interna do kit
+if ! grep -q "^SSRF_PROXY_ALLOW_PRIVATE_DOMAINS=" dify/.env; then
+  sed -i "/^SSRF_PROXY_ALLOW_PRIVATE_IPS=/d" dify/.env
+  cat >> dify/.env <<'REDE'
+
+SSRF_PROXY_ALLOW_PRIVATE_IPS=172.16.0.0/12,192.168.0.0/16,10.0.0.0/8
+SSRF_PROXY_ALLOW_PRIVATE_DOMAINS=host.docker.internal
+REDE
 fi
 
 # O .env.example do Dify não traz a conexão com o pgvector (ela fica em

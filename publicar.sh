@@ -36,8 +36,18 @@ echo "[2/4] Preparando os arquivos..."
 git config user.name  >/dev/null 2>&1 || git config user.name "$USUARIO"
 git config user.email >/dev/null 2>&1 || git config user.email "${ID}+${USUARIO}@users.noreply.github.com"
 git config core.autocrlf false
-git checkout -q -B main
+git checkout -q main 2>/dev/null || git checkout -q -b main
+# Nunca sobrescreve o GitHub com uma cópia antiga: é de lá que os alunos se atualizam
+if git remote get-url origin >/dev/null 2>&1 && git fetch -q origin main 2>/dev/null \
+   && ! git merge-base --is-ancestor FETCH_HEAD HEAD; then
+  parar "o GitHub tem uma versão mais nova que esta pasta. Rode 'git pull origin main' e tente de novo."
+fi
 git add -A
+# Os .env têm chaves e o repositório é público
+if git diff --cached --name-only --diff-filter=d | grep -qE '(^|/)\.env$'; then
+  git reset -q
+  parar "um arquivo .env ia ser publicado. Rode 'git rm --cached dify/.env chatwoot/.env' e tente de novo."
+fi
 git diff --cached --quiet || git commit -q -m "Kit IA para Centros de Suporte ($(date +%d/%m/%Y\ %H:%M))"
 
 # 4. Cria o repositório público (ou atualiza, se já existir) e envia
@@ -45,7 +55,7 @@ if gh repo view "$USUARIO/$REPO" >/dev/null 2>&1; then
   echo "[3/4] O repositório $USUARIO/$REPO já existe: enviando a versão atual..."
   git remote remove origin >/dev/null 2>&1 || true
   git remote add origin "https://github.com/$USUARIO/$REPO.git"
-  git push -q -u origin main --force
+  git push -q -u origin main || parar "o GitHub recusou o envio. Rode 'git pull origin main' e tente de novo."
 else
   echo "[3/4] Criando o repositório público $USUARIO/$REPO e enviando os arquivos..."
   git remote remove origin >/dev/null 2>&1 || true
