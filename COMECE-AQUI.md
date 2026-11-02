@@ -2,6 +2,16 @@
 
 Este é o **seu** ambiente: só você o vê. Os dados são fictícios.
 
+> **Já fez o fork antes de 2 de novembro de 2026?** Atualize o kit uma única vez. Depois disso, ele se atualiza sozinho sempre que o ambiente liga.
+>
+> - **Se você já abriu o seu Codespace:** abra-o, clique no Terminal (painel de baixo), cole o comando abaixo e tecle Enter. Espere aparecer **PRONTO!**.
+>   ```
+>   curl -fsSL https://raw.githubusercontent.com/LisianeReipsPUCPR/kit-ia-suporte/main/.devcontainer/atualizar.sh | bash && bash .devcontainer/ligar.sh
+>   ```
+> - **Se você ainda não abriu:** na página do seu fork no GitHub, clique em **Sync fork** › **Update branch** e abra o Codespace normalmente.
+>
+> Não use `git pull` nesta atualização: ele pode falhar ou apagar as suas chaves. Depois, conecte o Groq como explica o passo 3 (quem já usa o Gemini pode continuar com ele). Se **Kit atualizado** não ficar OK no painel, chame a professora.
+
 ## 1. Espere ligar
 Na primeira vez, o laboratório leva de **15 a 25 minutos** para ligar. Nas próximas vezes, 2 a 3 minutos.
 
