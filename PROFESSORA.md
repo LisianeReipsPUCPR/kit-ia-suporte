@@ -40,6 +40,36 @@ Forks anteriores a este mecanismo precisam de uma ação, uma única vez:
   (não usar `git pull`: ele falha ou apaga os `.env` do aluno, com as chaves dele)
 - quem **ainda não abriu**: na página do fork, clicar em **Sync fork** › **Update branch** e abrir o Codespace.
 
+## Próxima aula: atualizar o kit com os alunos
+Serve para quem fez o fork antes de 2 de novembro de 2026. Basta fazer uma vez.
+
+**Antes da aula**
+- [ ] Pedir a um aluno que faça os passos abaixo e confirmar que deu certo. Esse caminho ainda não foi testado em um Codespace real.
+- [ ] Abrir um Codespace novo em um fork de teste e seguir o `COMECE-AQUI.md`, para conferir o caminho de quem começa agora.
+- [ ] Avisar a turma para criar uma chave gratuita em https://console.groq.com/keys. Cada aluno usa a própria chave.
+
+**Na aula, com os alunos**
+1. Quem **já abriu o Codespace**: abrir o Codespace, clicar no Terminal (painel de baixo), colar o comando abaixo, teclar Enter e esperar aparecer **PRONTO!**.
+   ```
+   curl -fsSL https://raw.githubusercontent.com/LisianeReipsPUCPR/kit-ia-suporte/main/.devcontainer/atualizar.sh | bash && bash .devcontainer/ligar.sh
+   ```
+   Não usar `git pull`: ele falha ou apaga os `.env` do aluno, com as chaves dele.
+2. Quem **ainda não abriu**: na página do fork, clicar em **Sync fork** › **Update branch** e abrir o Codespace normalmente.
+3. Abrir o painel do kit e conferir se **Kit atualizado** está **OK**.
+4. Clicar em **Abrir o Dify** › **Integrações** › **Groq** e colar a chave. Quem já usa o Gemini pode continuar com ele.
+5. Voltar ao painel, conferir se a conta aparece como **conectada** e clicar em **Testar agora**.
+6. Abrir uma **conversa nova** no balão de chat e enviar `oi`, `como emito uma certidão negativa?`, `receita de pudim` e `ATENDENTE`.
+
+**Se algo der errado**
+| O que aparece | O que fazer |
+|---|---|
+| **Kit atualizado** não aparece no painel | A atualização não aconteceu: repetir o passo 1 ou 2. |
+| **Kit atualizado** com **ver aviso** | No Terminal, rodar `cat config/atualizacao.json` para ler o motivo. Em conflito, nada se perde e o kit segue na versão atual. |
+| Conta **não conectada** | Refazer o passo 4 com a chave do próprio aluno. |
+| **Limite atingido** | O painel mostra quando volta. No Groq costuma ser questão de segundos ou minutos, porque cada chave aguenta cerca de 5 perguntas por minuto. |
+| **Chat chega ao robô: bloqueado** | Rodar `bash .devcontainer/ligar.sh` no Terminal e abrir uma conversa nova. |
+| O robô não responde em uma conversa antiga | Ela já está com o atendente humano: abrir uma conversa nova. |
+
 ## Na aula
 - Conferir se quem já tinha fork fez a atualização: no painel do kit, **Kit atualizado** precisa estar **OK**.
 - Garantir que os alunos tenham conta no GitHub (gratuita, 5 minutos).
