@@ -1,3 +1,7 @@
+> **Observação:** quem fez o fork antes de 2 de novembro de 2026 precisa atualizá-lo uma única vez, porque
+> ninguém consegue alterar o fork de outra pessoa de fora. Avise esses alunos: o passo a passo está em
+> [Atualizar os alunos](#atualizar-os-alunos). Depois disso, o kit se atualiza sozinho sempre que o ambiente liga.
+
 ## Publicar (uma vez, 10 minutos)
 1. Entrar em https://github.com (criar a conta, se precisar) › **New repository**.
    Nome: `kit-ia-suporte` · **Public** · Create repository.
@@ -37,6 +41,7 @@ Forks anteriores a este mecanismo precisam de uma ação, uma única vez:
 - quem **ainda não abriu**: na página do fork, clicar em **Sync fork** › **Update branch** e abrir o Codespace.
 
 ## Na aula
+- Conferir se quem já tinha fork fez a atualização: no painel do kit, **Kit atualizado** precisa estar **OK**.
 - Garantir que os alunos tenham conta no GitHub (gratuita, 5 minutos).
 - Pedir que abram o link **logo no início** e, enquanto o ambiente liga (primeira vez), apresentar a parte teórica.
 - Garantir que cada aluno tenha uma chave do Groq (gratuita, https://console.groq.com/keys).
