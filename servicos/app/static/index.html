@@ -32,6 +32,12 @@
   pre { background:#26282c; color:#f2efe8; padding:10px 12px; border-radius:8px; overflow-x:auto; font-size:13px; margin:10px 0 0; white-space:pre-wrap; }
   .msg { margin-top:8px; font-weight:600; }
   ol { margin:6px 0 0; padding-left:20px; }
+  h3 { margin:18px 0 8px; font-size:16px; }
+  .aviso { border:1px solid var(--line); border-left-width:5px; border-radius:8px; padding:10px 12px; margin-bottom:8px; }
+  .aviso strong { display:block; }
+  .aviso.ok { border-left-color:var(--ok); } .aviso.bad { border-left-color:var(--bad); } .aviso.warn { border-left-color:var(--warn); }
+  .acoes { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; }
+  .acoes p { margin:0; flex:1 1 260px; }
 </style>
 </head>
 <body>
@@ -45,6 +51,14 @@
   <h2><small>1</small>Está tudo ligado?</h2>
   <p class="ajuda">Atualiza sozinho a cada 5 segundos. Na primeira vez, o Dify e o Chatwoot podem levar alguns minutos para ficar verdes.</p>
   <div class="status" id="status">Verificando...</div>
+
+  <h3>O robô está respondendo?</h3>
+  <div class="aviso warn" id="robo-aviso" role="status"><strong id="robo-titulo">Verificando...</strong><span id="robo-acao"></span></div>
+  <div class="status" id="robo-itens"></div>
+  <div class="acoes">
+    <button type="button" class="sec" id="robo-testar">Testar agora</button>
+    <p class="ajuda">O painel não sabe quanto resta da cota: ele avisa quando uma conversa recebe o erro de limite. O teste faz uma pergunta real e gasta cota. Limites da conta: <a href="https://console.groq.com/settings/limits" target="_blank" rel="noopener">Groq</a>.</p>
+  </div>
 </section>
 
 <section>
@@ -134,6 +148,31 @@ async function atualizar() {
   } catch (e) { document.getElementById("status").textContent = "Não consegui verificar. O kit está ligado?"; }
 }
 atualizar(); setInterval(atualizar, 5000);
+
+const quando = t => new Date(t * 1000).toLocaleString("pt-BR", {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"});
+const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+async function atualizarRobo() {
+  try {
+    const r = await fetch("/api/robo"); const s = await r.json();
+    document.getElementById("robo-aviso").className = "aviso " + s.cls;
+    document.getElementById("robo-titulo").textContent = s.titulo;
+    document.getElementById("robo-acao").textContent = s.acao
+      .replace("{hora}", s.volta_em ? quando(s.volta_em) : "").replace("{ok}", s.ok_em ? quando(s.ok_em) : "");
+    document.getElementById("robo-itens").innerHTML = s.itens.map(i =>
+      `<div class="item"><span>${esc(i.nome)}</span><span class="pill ${esc(i.cls)}">${esc(i.txt)}${i.volta_em ? " até " + quando(i.volta_em) : ""}</span></div>`).join("");
+  } catch (e) {
+    document.getElementById("robo-aviso").className = "aviso warn";
+    document.getElementById("robo-titulo").textContent = "Não consegui verificar o robô.";
+    document.getElementById("robo-acao").textContent = "";
+  }
+}
+atualizarRobo(); setInterval(atualizarRobo, 5000);
+document.getElementById("robo-testar").addEventListener("click", async e => {
+  const b = e.target; b.disabled = true; b.textContent = "Testando...";
+  try { await fetch("/api/robo/testar", {method:"POST"}); } catch (err) {}
+  await atualizarRobo();
+  b.disabled = false; b.textContent = "Testar agora";
+});
 
 async function enviar(form, url) {
   const r = await fetch(url, {method:"POST", body:new FormData(form)});

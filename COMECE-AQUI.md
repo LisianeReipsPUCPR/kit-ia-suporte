@@ -17,13 +17,18 @@ Clique no endereço que aparece depois de **PRONTO!** ou, na aba **PORTAS**, na 
 
 ## 3. Ligue a IA (uma vez só, cerca de 10 minutos)
 
-### A. Conecte o Gemini
+### A. Conecte o Groq
 1. No painel, clique em **Abrir o Dify** e entre com o login e a senha do painel.
 2. No menu lateral esquerdo, clique em **Integrações**.
-3. Clique na lupa, pesquise **Gemini** e clique em **Instalar**.
-4. Dentro do Gemini, dê o nome **API Teste - Gemini** e cole a sua chave gratuita do
-   Google AI Studio (https://aistudio.google.com/apikey).
-5. Quando a lista de modelos aparecer, escolha **Gemini 3 Lite**.
+3. Clique na lupa, pesquise **Groq** e clique em **Instalar**.
+4. Dentro do Groq, dê o nome **API Teste - Groq** e cole a sua chave gratuita, criada em
+   https://console.groq.com/keys. Os limites da sua conta aparecem em
+   https://console.groq.com/settings/limits.
+5. Quando a lista de modelos aparecer, confira se **openai/gpt-oss-20b** está nela.
+
+**Prefere usar o Gemini?** Nos itens 3 e 4, instale **Gemini** e cole a chave gratuita do Google
+AI Studio (https://aistudio.google.com/apikey). No item 13, escolha **Gemini 3 Lite** nos dois nós.
+O limite gratuito do Gemini costuma ser bem menor: se o robô parar, o painel do kit avisa no item 1.
 
 ### B. Crie a base de conhecimento
 6. Aqui no Codespace, na lista de arquivos à esquerda, abra a pasta **base-de-conhecimento**,
@@ -35,8 +40,11 @@ Clique no endereço que aparece depois de **PRONTO!** ou, na aba **PORTAS**, na 
    3. Arraste os 5 arquivos baixados para a área indicada.
    4. Clique em **Próximo**.
 8. Na barra superior aparece a etapa **(Step 2) Pré-processamento e Limpeza de Texto**.
-   Deixe a segmentação como está (padrão). Em **Modo de índice**, escolha **Alta qualidade**
-   e o modelo de embedding do Gemini. Se não aparecer nenhum, escolha **Econômico**.
+   Em **Segmentação**, troque o **identificador de segmento** por `\n\n\n` e deixe o tamanho máximo
+   em 1024 e a sobreposição em 0: cada artigo precisa ficar inteiro em um só pedaço, senão o robô
+   recebe o texto pela metade e pode inventar o resto.
+   Em **Modo de índice**, escolha **Econômico** (o Groq não gera embeddings).
+   Com o Gemini, você pode escolher **Alta qualidade** e o modelo de embedding dele.
 9. Clique em **Salvar e processar** e espere todos os arquivos ficarem como **Disponível**.
    Se algum ficar como **Erro**, chame a professora antes de seguir.
 10. Clique no nome da base (no topo) e renomeie para **Base STJ – Atendimento**.
@@ -45,7 +53,7 @@ Clique no endereço que aparece depois de **PRONTO!** ou, na aba **PORTAS**, na 
 11. Vá em **Estúdio** e abra o app **Bot STJ**.
 12. Clique no nó **Base de conhecimento** › no **+** ao lado de "Conhecimento" ›
     marque **Base STJ – Atendimento** › **Adicionar**.
-13. Clique no nó **Classificador de escopo** e confira se o modelo é o **Gemini 3 Lite**.
+13. Clique no nó **Classificador de escopo** e confira se o modelo é o **openai/gpt-oss-20b**.
     Faça o mesmo no nó **Redigir resposta (LLM)**. Se aparecer um aviso, escolha o modelo.
 14. Clique em **Publicar** › **Publicar atualização**.
 

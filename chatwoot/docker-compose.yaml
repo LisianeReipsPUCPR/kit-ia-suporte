@@ -5,6 +5,9 @@ name: kit-chatwoot
 x-base: &base
   image: chatwoot/chatwoot:v4.18.0
   env_file: .env
+  environment:
+    # Sem isto o Chatwoot recusa o webhook do bot: o conector só existe na rede interna do kit
+    SAFE_FETCH_ALLOW_PRIVATE_NETWORK: "true"
   volumes:
     - storage_data:/app/storage
     - ../config:/kit/config
@@ -45,7 +48,7 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\""]
+    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\" --stop-writes-on-bgsave-error no"]
     env_file: .env
     volumes:
       - redis_data:/data

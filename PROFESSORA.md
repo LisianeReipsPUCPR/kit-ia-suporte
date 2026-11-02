@@ -15,7 +15,7 @@
 - [ ] Abrir o painel e conferir se os itens ficam verdes, incluindo **Chatwoot configurado** e **Dify configurado**.
       Se "Dify configurado" ficar vermelho, anotar a linha `[dify] AVISO` do terminal.
 - [ ] Entrar no Dify com o login do painel e conferir se o app **Bot STJ** já está lá.
-- [ ] Instalar o Gemini com a sua chave e clicar em **Publicar** no Bot STJ.
+- [ ] Instalar o Groq (ou o Gemini) com a sua chave e clicar em **Publicar** no Bot STJ.
 - [ ] Testar na pré-visualização do Dify: `oi`, `qual o andamento do processo 0001234-52.2026.3.00.0000`,
       `quero fazer uma reclamação sobre a demora`, `receita de pudim`.
 - [ ] Testar no balão do painel: conferir se `oi` responde e se `ATENDENTE` transfere a conversa para o Chatwoot.

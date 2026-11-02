@@ -178,10 +178,22 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: answer
-      id: numero_ok-false-resp_pede_numero
+      id: numero_ok-invalido-resp_pede_numero
+      source: numero_ok
+      sourceHandle: invalido
+      target: resp_pede_numero
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: numero_ok-false-base
       source: numero_ok
       sourceHandle: 'false'
-      target: resp_pede_numero
+      target: base
       targetHandle: target
       type: custom
       zIndex: 0
@@ -337,11 +349,12 @@ workflow:
         title: Classificador de escopo
         query_variable_selector: *id001
         model: &id002
-          provider: langgenius/gemini/google
-          name: gemini-2.5-flash
+          provider: langgenius/groq/groq
+          name: openai/gpt-oss-20b
           mode: chat
           completion_params:
             temperature: 0.2
+            reasoning_effort: low
         classes:
         - id: saudacao
           name: 'Saudação: oi, olá, bom dia, boa tarde, tudo bem, obrigado'
@@ -451,7 +464,7 @@ workflow:
         dataset_ids: []
         retrieval_mode: multiple
         multiple_retrieval_config:
-          top_k: 3
+          top_k: 2
           score_threshold: null
           reranking_enable: false
         desc: ''
@@ -472,6 +485,7 @@ workflow:
     - data:
         type: llm
         title: Redigir resposta (LLM)
+        reasoning_format: separated
         model: *id002
         context:
           enabled: true
@@ -482,11 +496,15 @@ workflow:
         - role: system
           text: 'Você é a Lia, assistente virtual do atendimento do Superior Tribunal de Justiça (STJ).
 
-            Responda SOMENTE com base no CONTEXTO abaixo.
+            Responda SOMENTE com o que está escrito no CONTEXTO abaixo, usando linguagem simples e no máximo 5 passos.
 
-            Use linguagem simples, no máximo 5 passos, e termine com o link oficial que aparece no contexto.
+            Não acrescente passos, telas, botões, formulários, links, telefones nem exigências que não estejam escritos no CONTEXTO. Mantenha os avisos de "Atenção" e "Importante" que se aplicam à pergunta.
 
-            Se o contexto não responder à pergunta, diga exatamente: "Não encontrei essa informação. Quer falar com um atendente?"
+            Termine com o endereço que aparece depois de "Fonte oficial" no artigo usado, copiado exatamente como está.
+
+            Somente se a pergunta for sobre o andamento de um processo, acrescente no final: "Se preferir, me informe o número do processo e eu consulto aqui."
+
+            Se o CONTEXTO não responder à pergunta, diga exatamente: "Não encontrei essa informação. Quer falar com um atendente?"
 
             Nunca dê orientação jurídica, opinião ou previsão de decisões.
 
@@ -582,6 +600,17 @@ workflow:
             comparison_operator: is
             value: sim
             varType: string
+        - case_id: invalido
+          id: invalido
+          logical_operator: and
+          conditions:
+          - id: c-num-2
+            variable_selector:
+            - valida_numero
+            - numero
+            comparison_operator: not empty
+            value: ''
+            varType: string
         desc: ''
         selected: false
       id: numero_ok
@@ -599,10 +628,8 @@ workflow:
       width: 244
     - data:
         type: answer
-        title: 'Resposta: pedir o número'
-        answer: 'Para consultar, informe o número completo do processo no padrão CNJ, por exemplo: 0001234-52.2026.3.00.0000.
-
-          Se você já informou, confira os dígitos: esse número não parece válido.'
+        title: 'Resposta: número inválido'
+        answer: 'Esse número não parece válido. Confira os dígitos e informe o número completo do processo no padrão CNJ, por exemplo: 0001234-52.2026.3.00.0000.'
         variables: []
         desc: ''
         selected: false

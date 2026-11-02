@@ -28,6 +28,7 @@ unless inbox
                                      welcome_tagline: 'Assistente virtual do laboratório. Dados fictícios.')
   inbox = Inbox.create!(account: account, channel: canal, name: 'Chat on-line')
 end
+inbox.update!(enable_email_collect: false) # quem responde primeiro é o bot, não o pedido de e-mail
 InboxMember.find_or_create_by!(user_id: user.id, inbox_id: inbox.id)
 
 bot = AgentBot.find_by(name: 'Lia', account_id: account.id) ||
