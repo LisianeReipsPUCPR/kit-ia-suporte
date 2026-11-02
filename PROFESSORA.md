@@ -25,7 +25,17 @@
 
 Se um passo falhar, mandar o print e as últimas linhas do terminal (também ficam em `config/inicio.log`).
 
+## Atualizar os alunos
+Depois de enviar para a `main`, cada ambiente de aluno busca a versão nova sozinho ao ligar
+(`.devcontainer/atualizar.sh`) e o painel mostra o resultado em **Kit atualizado**.
+Se o fluxo do Bot STJ mudou, suba `VERSAO` em `servicos/app/configurar_dify.py`: a atualização do
+Dify roda uma vez em cada ambiente e preserva o que o aluno personalizou.
+Forks anteriores a este mecanismo precisam de uma ação, uma única vez:
+- quem **já tem Codespace**: no Terminal, rodar
+  `git pull --no-edit https://github.com/LisianeReipsPUCPR/kit-ia-suporte main && bash .devcontainer/ligar.sh`
+- quem **ainda não abriu**: na página do fork, clicar em **Sync fork** › **Update branch** e abrir o Codespace.
+
 ## Na aula
 - Garantir que os alunos tenham conta no GitHub (gratuita, 5 minutos).
 - Pedir que abram o link **logo no início** e, enquanto o ambiente liga (primeira vez), apresentar a parte teórica.
-- Garantir que cada aluno tenha uma chave do Google AI Studio (gratuita, conta Google).
+- Garantir que cada aluno tenha uma chave do Groq (gratuita, https://console.groq.com/keys).

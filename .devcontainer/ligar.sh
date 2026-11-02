@@ -4,6 +4,17 @@ cd "$(dirname "$0")/.." || exit 1
 mkdir -p config
 exec > >(tee -a config/inicio.log) 2>&1
 echo "== Ligando o laboratório do Chatbot STJ =="
+
+# Traz a versão nova do kit; se este script mudou, recomeça usando o novo
+if [ -z "$KIT_ATUALIZADO" ]; then
+  antes="$(git rev-parse HEAD)"
+  bash .devcontainer/atualizar.sh
+  if [ "$(git rev-parse HEAD)" != "$antes" ]; then
+    export KIT_ATUALIZADO=1
+    exec bash .devcontainer/ligar.sh
+  fi
+fi
+
 for i in $(seq 60); do docker info >/dev/null 2>&1 && break; sleep 2; done
 
 DOM="${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}"
@@ -38,8 +49,14 @@ if [ ! -f ../config/.chatwoot_pronto ]; then
   docker compose run --rm -e KIT_EMAIL -e KIT_SENHA -e PUB_PAINEL rails bundle exec rails runner /kit/seed_kit.rb \
     || { echo "ERRO ao configurar o Chatwoot."; exit 1; }
   touch ../config/.chatwoot_pronto
+  touch ../config/.chatwoot_v2
 fi
 docker compose up -d || { echo "ERRO ao ligar o Chatwoot."; exit 1; }
+# Ambientes criados antes: o bot responde primeiro, sem o pedido de e-mail
+if [ ! -f ../config/.chatwoot_v2 ]; then
+  docker compose exec -T rails bundle exec rails runner 'Inbox.where(name: "Chat on-line").update_all(enable_email_collect: false)' >/dev/null 2>&1 \
+    && touch ../config/.chatwoot_v2
+fi
 cd ..
 
 echo "[3/4] Ligando os serviços do kit..."

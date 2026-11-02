@@ -65,6 +65,7 @@ async def status():
         "tribunal": await ok(URL["tribunal"] + "/registros"),
         "chatwoot_configurado": bool(ler("chatwoot.json").get("website_token")),
         "dify_configurado": bool(ler("dify.json").get("dify_key")),
+        "kit_atualizado": ler("atualizacao.json").get("situacao", "ok") == "ok",
     }
 
 

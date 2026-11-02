@@ -136,13 +136,13 @@
 </main>
 
 <script>
-const nomes = {chatwoot:"Chatwoot", dify:"Dify", conector:"Conector", ouvidoria:"Ouvidoria simulada", tribunal:"API do tribunal", chatwoot_configurado:"Chat on-line criado", dify_configurado:"Chave do Dify salva"};
+const nomes = {chatwoot:"Chatwoot", dify:"Dify", conector:"Conector", ouvidoria:"Ouvidoria simulada", tribunal:"API do tribunal", chatwoot_configurado:"Chat on-line criado", dify_configurado:"Chave do Dify salva", kit_atualizado:"Kit atualizado"};
 async function atualizar() {
   try {
     const r = await fetch("/api/status"); const s = await r.json();
     document.getElementById("status").innerHTML = Object.keys(nomes).map(k => {
-      const ok = s[k]; const cls = ok ? "ok" : (k === "dify_configurado" ? "warn" : "bad");
-      const txt = ok ? "OK" : (k === "dify_configurado" ? "falta" : "aguardando");
+      const ok = s[k]; const cls = ok ? "ok" : (k === "dify_configurado" || k === "kit_atualizado" ? "warn" : "bad");
+      const txt = ok ? "OK" : (k === "dify_configurado" ? "falta" : (k === "kit_atualizado" ? "ver aviso" : "aguardando"));
       return `<div class="item"><span>${nomes[k]}</span><span class="pill ${cls}">${txt}</span></div>`;
     }).join("");
   } catch (e) { document.getElementById("status").textContent = "Não consegui verificar. O kit está ligado?"; }
