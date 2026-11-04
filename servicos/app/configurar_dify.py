@@ -25,7 +25,7 @@ def etapa(msg):
 
 
 def esperar(h: httpx.Client):
-    for _ in range(120):  # até 10 minutos
+    for _ in range(360):  # até 30 minutos na primeira inicialização
         try:
             r = h.get(f"{DIFY}/console/api/setup")
             if r.status_code == 200:
@@ -33,7 +33,7 @@ def esperar(h: httpx.Client):
         except httpx.HTTPError:
             pass
         time.sleep(5)
-    raise SystemExit("Dify não respondeu em 10 minutos.")
+    raise SystemExit("Dify não respondeu em 30 minutos.")
 
 
 def main():
